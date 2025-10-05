@@ -52,3 +52,9 @@ python manage.py migrate
 
 # 6️⃣ Start the development server
 python manage.py runserver
+
+🛡️ License
+
+This project is licensed under the MIT License
+.
+Feel free to use and modify it for your own projects — attribution appreciated.
