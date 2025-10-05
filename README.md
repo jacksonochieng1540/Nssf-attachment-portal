@@ -14,7 +14,6 @@ Built with **Django**, styled using the **NSSF theme** (trustworthy, professiona
 - 🎨 **Custom NSSF UI Theme** — Professional, clean, and responsive interface inspired by NSSF colors and values.  
 - 📊 **Dashboard Insights** — View key attachment statistics and analytics.  
 
----
 
 ## 🧩 Tech Stack
 
@@ -52,6 +51,7 @@ python manage.py migrate
 
 # 6️⃣ Start the development server
 python manage.py runserver
+
 
 🛡️ License
 
