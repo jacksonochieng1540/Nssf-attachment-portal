@@ -1,4 +1,4 @@
-# 🏢 NSSF Attachment Management Portal
+# 🏢 NSSF Attachment and Internship Management Portal
 
 A modern web platform designed to streamline **student industrial attachments** with **NSSF compliance** and secure digital management.  
 Built with **Django**, styled using the **NSSF theme** (trustworthy, professional, and accessible).
