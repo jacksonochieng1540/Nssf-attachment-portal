@@ -32,7 +32,7 @@ Built with **Django**, styled using the **NSSF theme** (trustworthy, professiona
 
 
 # 1️⃣ Clone the repository
-git clone https://github.com/yourusername/nssf-attachment-portal.git
+git clone https://github.com/jacksonochieng1540/nssf-attachment-portal.git
 cd nssf-attachment-portal
 
 # 2️⃣ Create a virtual environment
