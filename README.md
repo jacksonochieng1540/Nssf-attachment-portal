@@ -58,3 +58,5 @@ python manage.py runserver
 This project is licensed under the MIT License
 .
 Feel free to use and modify it for your own projects — attribution appreciated.
+
+💡 “Empowering students and organizations through secure, efficient, and compliant digital attachment management.”
