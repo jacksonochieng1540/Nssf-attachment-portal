@@ -1,0 +1,140 @@
+<!-- accounts/templates/accounts/profile.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header bg-nssf-primary text-white">
+                    <h5 class="mb-0">Profile Information</h5>
+                </div>
+                <div class="card-body text-center">
+                    <div class="mb-3">
+                        <i class="fas fa-user-circle fa-5x text-nssf-accent"></i>
+                    </div>
+                    <h4>{{ user.get_full_name|default:user.username }}</h4>
+                    <p class="text-muted">@{{ user.username }}</p>
+                    <span class="badge bg-nssf-secondary">{{ user.get_role_display }}</span>
+                    
+                    <hr>
+                    
+                    <div class="text-start">
+                        <p><strong>Email:</strong> {{ user.email|default:"Not provided" }}</p>
+                        <p><strong>Phone:</strong> {{ user.phone_number|default:"Not provided" }}</p>
+                        <p><strong>Last Login:</strong> {{ user.last_login|date:"M d, Y H:i" }}</p>
+                        <p><strong>Member Since:</strong> {{ user.date_joined|date:"M d, Y" }}</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card mt-4">
+                <div class="card-header bg-nssf-primary text-white">
+                    <h5 class="mb-0">Quick Actions</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <a href="{% url 'password_change' %}" class="btn btn-outline-nssf">
+                            <i class="fas fa-key me-2"></i>Change Password
+                        </a>
+                        <a href="#" class="btn btn-outline-nssf">
+                            <i class="fas fa-cog me-2"></i>Account Settings
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-nssf-primary text-white d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Profile Details</h5>
+                    <a href="#" class="btn btn-sm btn-light">Edit Profile</a>
+                </div>
+                <div class="card-body">
+                    {% if user.role == 'student' and student_profile %}
+                    <h6 class="text-nssf-accent">Student Information</h6>
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <p><strong>Student ID:</strong> {{ student_profile.student_id }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Department:</strong> {{ student_profile.department|default:"Not specified" }}</p>
+                        </div>
+                    </div>
+                    {% endif %}
+                    
+                    {% if user.role == 'company' and company %}
+                    <h6 class="text-nssf-accent">Company Information</h6>
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <p><strong>Company Name:</strong> {{ company.name }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>NSSF Number:</strong> {{ company.nssf_number|default:"Not provided" }}</p>
+                        </div>
+                        <div class="col-12">
+                            <p><strong>Address:</strong> {{ company.address|default:"Not provided" }}</p>
+                        </div>
+                    </div>
+                    {% endif %}
+                    
+                    <h6 class="text-nssf-accent">Account Information</h6>
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="first_name" class="form-label">First Name</label>
+                                <input type="text" class="form-control" id="first_name" value="{{ user.first_name }}">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="last_name" class="form-label">Last Name</label>
+                                <input type="text" class="form-control" id="last_name" value="{{ user.last_name }}">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email" value="{{ user.email }}">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="phone" class="form-label">Phone Number</label>
+                                <input type="tel" class="form-control" id="phone" value="{{ user.phone_number }}">
+                            </div>
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-nssf-primary">Update Profile</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            {% if user.role == 'student' %}
+            <div class="card mt-4">
+                <div class="card-header bg-nssf-primary text-white">
+                    <h5 class="mb-0">NSSF Information</h5>
+                </div>
+                <div class="card-body">
+                    {% if nssf_details %}
+                    <div class="alert alert-success">
+                        <i class="fas fa-check-circle me-2"></i>Your NSSF details have been verified.
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>NSSF Number:</strong> {{ nssf_details.nssf_number }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Status:</strong> <span class="badge bg-success">Verified</span></p>
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="alert alert-warning">
+                        <i class="fas fa-exclamation-triangle me-2"></i>You haven't provided your NSSF details yet.
+                    </div>
+                    <a href="{% url 'nssf_detail' %}" class="btn btn-nssf-primary">Add NSSF Details</a>
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

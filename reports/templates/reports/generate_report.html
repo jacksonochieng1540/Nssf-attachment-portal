@@ -1,0 +1,122 @@
+<!-- reports/templates/reports/generate_report.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-nssf-primary text-white">
+                    <h4 class="mb-0"><i class="fas fa-chart-bar me-2"></i>Generate Reports</h4>
+                </div>
+                <div class="card-body">
+                    <form id="reportForm" method="get" action="{% url 'download_report' 'placeholder' %}">
+                        <div class="mb-3">
+                            <label for="report_type" class="form-label">Report Type</label>
+                            <select class="form-select" id="report_type" name="report_type" required>
+                                <option value="">Select a report type</option>
+                                {% for report in report_types %}
+                                <option value="{{ report.value }}">{{ report.label }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        
+                        <div id="dateRange" class="row mb-3 d-none">
+                            <div class="col-md-6">
+                                <label for="start_date" class="form-label">Start Date</label>
+                                <input type="date" class="form-control" id="start_date" name="start_date">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="end_date" class="form-label">End Date</label>
+                                <input type="date" class="form-control" id="end_date" name="end_date">
+                            </div>
+                        </div>
+                        
+                        <div id="statusFilter" class="mb-3 d-none">
+                            <label for="status" class="form-label">Status</label>
+                            <select class="form-select" id="status" name="status">
+                                <option value="">All Statuses</option>
+                                <option value="pending">Pending</option>
+                                <option value="approved">Approved</option>
+                                <option value="rejected">Rejected</option>
+                                <option value="completed">Completed</option>
+                            </select>
+                        </div>
+                        
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-nssf-primary">
+                                <i class="fas fa-download me-2"></i>Generate Report
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="card mt-4">
+                <div class="card-header bg-nssf-secondary text-white">
+                    <h5 class="mb-0"><i class="fas fa-info-circle me-2"></i>Report Information</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>Students Report</h6>
+                            <p class="text-muted">Lists all registered students with their details and NSSF status.</p>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>Companies Report</h6>
+                            <p class="text-muted">Lists all registered companies with their details and NSSF numbers.</p>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-6">
+                            <h6>Attachments Report</h6>
+                            <p class="text-muted">Lists all attachment records with filtering options by date and status.</p>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>NSSF Returns Report</h6>
+                            <p class="text-muted">Lists all submitted NSSF returns with filtering options by date.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const reportType = document.getElementById('report_type');
+    const dateRange = document.getElementById('dateRange');
+    const statusFilter = document.getElementById('statusFilter');
+    const reportForm = document.getElementById('reportForm');
+    
+    reportType.addEventListener('change', function() {
+        const value = this.value;
+        
+        // Show/hide filters based on report type
+        if (value === 'attachments') {
+            dateRange.classList.remove('d-none');
+            statusFilter.classList.remove('d-none');
+        } else if (value === 'nssf_returns') {
+            dateRange.classList.remove('d-none');
+            statusFilter.classList.add('d-none');
+        } else {
+            dateRange.classList.add('d-none');
+            statusFilter.classList.add('d-none');
+        }
+    });
+    
+    reportForm.addEventListener('submit', function(e) {
+        const reportTypeValue = reportType.value;
+        if (!reportTypeValue) {
+            e.preventDefault();
+            alert('Please select a report type.');
+            return;
+        }
+        
+        // Update form action with selected report type
+        this.action = this.action.replace('placeholder', reportTypeValue);
+    });
+});
+</script>
+{% endblock %}

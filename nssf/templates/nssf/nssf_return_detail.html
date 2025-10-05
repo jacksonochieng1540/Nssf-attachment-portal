@@ -1,0 +1,67 @@
+<!-- nssf/templates/nssf/nssf_return_detail.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-nssf-primary text-white d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0"><i class="fas fa-file-invoice me-2"></i>NSSF Return Details</h4>
+                    <span class="badge bg-{% if return_instance.is_processed %}success{% else %}warning{% endif %}">
+                        {% if return_instance.is_processed %}Processed{% else %}Pending{% endif %}
+                    </span>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <p><strong>Company:</strong> {{ return_instance.company.name }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>NSSF Number:</strong> {{ return_instance.company.nssf_number|default:"Not provided" }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>For Month:</strong> {{ return_instance.month|date:"F Y" }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Submitted On:</strong> {{ return_instance.submitted_on|date:"M d, Y H:i" }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Status:</strong> 
+                                {% if return_instance.is_processed %}
+                                <span class="badge bg-success">Processed</span>
+                                {% else %}
+                                <span class="badge bg-warning">Pending Review</span>
+                                {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <h5 class="text-nssf-accent">Return File</h5>
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-file-pdf fa-2x text-danger me-3"></i>
+                            <div>
+                                <p class="mb-0">{{ return_instance.return_file.name }}</p>
+                                <small class="text-muted">Uploaded on {{ return_instance.submitted_on|date:"M d, Y" }}</small>
+                            </div>
+                            <div class="ms-auto">
+                                <a href="{{ return_instance.return_file.url }}" class="btn btn-sm btn-outline-primary" download>
+                                    <i class="fas fa-download me-1"></i>Download
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="{% url 'nssf_return_list' %}" class="btn btn-secondary me-md-2">Back to List</a>
+                        {% if not return_instance.is_processed %}
+                        <a href="#" class="btn btn-nssf-primary">Mark as Processed</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

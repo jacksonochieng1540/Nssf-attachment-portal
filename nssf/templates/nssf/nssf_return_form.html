@@ -1,0 +1,62 @@
+<!-- nssf/templates/nssf/nssf_return_form.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-nssf-primary text-white">
+                    <h4 class="mb-0"><i class="fas fa-plus-circle me-2"></i>Submit NSSF Return</h4>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i>Please submit your monthly NSSF return for attached students.
+                    </div>
+                    
+                    <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+                        {% csrf_token %}
+                        
+                        <div class="mb-3">
+                            <label for="id_month" class="form-label">Month</label>
+                            {{ form.month }}
+                            {% if form.month.errors %}
+                            <div class="invalid-feedback d-block">
+                                {{ form.month.errors }}
+                            </div>
+                            {% endif %}
+                            <div class="form-text">Select the month for which you are submitting this return.</div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="id_return_file" class="form-label">Return File</label>
+                            {{ form.return_file }}
+                            {% if form.return_file.errors %}
+                            <div class="invalid-feedback d-block">
+                                {{ form.return_file.errors }}
+                            </div>
+                            {% endif %}
+                            <div class="form-text">Upload the NSSF return file (Excel or CSV format preferred).</div>
+                        </div>
+                        
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a href="{% url 'nssf_return_list' %}" class="btn btn-secondary me-md-2">Cancel</a>
+                            <button type="submit" class="btn btn-nssf-primary">Submit Return</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Add Bootstrap classes to form fields
+    const formFields = document.querySelectorAll('input');
+    formFields.forEach(field => {
+        field.classList.add('form-control');
+    });
+});
+</script>
+{% endblock %}

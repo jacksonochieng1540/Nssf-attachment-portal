@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+
+{% block title %}My Attachments{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>My Attachments</h2>
+        {% if user.role == 'student' or user.role == 'admin' %}
+            <a href="{% url 'attachment_create' %}" class="btn btn-primary">
+                <i class="fas fa-plus"></i> New Attachment
+            </a>
+        {% endif %}
+    </div>
+
+    <!-- Search and Filter Form -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <form method="get" class="row g-3">
+                <div class="col-md-6">
+                    <input type="text" name="q" class="form-control" placeholder="Search..." 
+                           value="{{ search_query }}">
+                </div>
+                <div class="col-md-4">
+                    <select name="status" class="form-select">
+                        <option value="">All Statuses</option>
+                        <option value="pending" {% if status_filter == 'pending' %}selected{% endif %}>Pending</option>
+                        <option value="approved" {% if status_filter == 'approved' %}selected{% endif %}>Approved</option>
+                        <option value="rejected" {% if status_filter == 'rejected' %}selected{% endif %}>Rejected</option>
+                        <option value="completed" {% if status_filter == 'completed' %}selected{% endif %}>Completed</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-outline-primary w-100">Filter</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Attachments Table -->
+    {% if attachments %}
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>Company</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Status</th>
+                        <th>Supervisor</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for attachment in attachments %}
+                    <tr>
+                        <td>{{ attachment.company.name }}</td>
+                        <td>{{ attachment.start_date }}</td>
+                        <td>{{ attachment.end_date }}</td>
+                        <td>
+                            <span class="badge 
+                                {% if attachment.status == 'approved' %}bg-success
+                                {% elif attachment.status == 'pending' %}bg-warning
+                                {% elif attachment.status == 'rejected' %}bg-danger
+                                {% elif attachment.status == 'completed' %}bg-info
+                                {% endif %}">
+                                {{ attachment.status|title }}
+                            </span>
+                        </td>
+                        <td>{{ attachment.supervisor_name }}</td>
+                        <td>
+                            <a href="{% url 'attachment_detail' attachment.pk %}" class="btn btn-sm btn-outline-primary">
+                                View
+                            </a>
+                            {% if user.role == 'student' and attachment.student.user == user or user.role == 'admin' %}
+                                <a href="{% url 'attachment_update' attachment.pk %}" class="btn btn-sm btn-outline-secondary">
+                                    Edit
+                                </a>
+                            {% endif %}
+                            {% if user.role in ['company', 'admin'] and attachment.status == 'pending' %}
+                                <a href="{% url 'attachment_approve' attachment.pk %}" class="btn btn-sm btn-outline-success">
+                                    Approve
+                                </a>
+                                <a href="{% url 'attachment_reject' attachment.pk %}" class="btn btn-sm btn-outline-danger">
+                                    Reject
+                                </a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="alert alert-info">
+            {% if user.role == 'student' %}
+                <h4>No attachments found</h4>
+                <p>You haven't created any attachments yet. 
+                   <a href="{% url 'attachment_create' %}">Create your first attachment</a> to get started.</p>
+            {% elif user.role == 'company' %}
+                <h4>No attachments found</h4>
+                <p>No students have applied for attachment at your company yet.</p>
+            {% else %}
+                <h4>No attachments found</h4>
+                <p>There are no attachments in the system yet.</p>
+            {% endif %}
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card animate-fade-in">
+                <div class="card-header bg-nssf-primary text-white d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0"><i class="fas fa-bell me-2"></i>Notification Details</h4>
+                    <span class="badge bg-{% if notification.is_read %}secondary{% else %}warning{% endif %}">
+                        {% if notification.is_read %}Read{% else %}Unread{% endif %}
+                    </span>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <h6 class="text-nssf-accent">Notification Information</h6>
+                            <p><strong>Type:</strong> 
+                                <span class="badge bg-{% if notification.notification_type == 'attachment_approved' %}success{% elif notification.notification_type == 'attachment_rejected' %}danger{% elif notification.notification_type == 'nssf_verified' %}info{% else %}primary{% endif %}">
+                                    {{ notification.get_notification_type_display }}
+                                </span>
+                            </p>
+                            <p><strong>Received:</strong> {{ notification.created_at|date:"M d, Y H:i" }}</p>
+                            <p><strong>Status:</strong> 
+                                {% if notification.is_read %}
+                                <span class="text-success">Read</span>
+                                {% else %}
+                                <span class="text-warning">Unread</span>
+                                {% endif %}
+                            </p>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="text-nssf-accent">Actions</h6>
+                            {% if not notification.is_read %}
+                            <form method="post" action="{% url 'notifications:mark_read' notification.pk %}" class="d-inline">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-success mb-2">
+                                    <i class="fas fa-check me-1"></i>Mark as Read
+                                </button>
+                            </form>
+                            {% endif %}
+                            {% if notification.link %}
+                            <a href="{{ notification.link }}" class="btn btn-nssf-primary mb-2">
+                                <i class="fas fa-external-link-alt me-1"></i>View Related Content
+                            </a>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <div class="mb-4">
+                        <h6 class="text-nssf-accent">Message Details</h6>
+                        <div class="card bg-light">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ notification.title }}</h5>
+                                <p class="card-text">{{ notification.message }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {% if notification.related_object_id %}
+                    <div class="mb-4">
+                        <h6 class="text-nssf-accent">Related Object</h6>
+                        <p class="text-muted">
+                            <i class="fas fa-link me-2"></i>
+                            This notification is related to {{ notification.related_content_type }} #{{ notification.related_object_id }}
+                        </p>
+                    </div>
+                    {% endif %}
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="{% url 'notifications:list' %}" class="btn btn-secondary me-md-2">
+                            <i class="fas fa-arrow-left me-1"></i>Back to List
+                        </a>
+                        <a href="{% url 'notifications:preferences' %}" class="btn btn-outline-primary">
+                            <i class="fas fa-cog me-1"></i>Notification Settings
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Auto-mark as read when page loads if not read
+    {% if not notification.is_read %}
+    setTimeout(() => {
+        fetch("{% url 'notifications:mark_read' notification.pk %}", {
+            method: 'POST',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRFToken': getCookie('csrftoken'),
+            },
+        });
+    }, 3000);
+    {% endif %}
+
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+});
+</script>
+{% endblock %}

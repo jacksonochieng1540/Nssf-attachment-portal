@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-nssf-primary text-white d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0"><i class="fas fa-briefcase me-2"></i>Attachment Details</h4>
+                    <span class="badge bg-{% if attachment.status == 'approved' %}success{% elif attachment.status == 'pending' %}warning{% elif attachment.status == 'rejected' %}danger{% else %}info{% endif %}">
+                        {{ attachment.status|title }}
+                    </span>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <h6 class="text-nssf-accent">Student Information</h6>
+                            <p><strong>Name:</strong> {{ attachment.student.user.get_full_name }}</p>
+                            <p><strong>Student ID:</strong> {{ attachment.student.student_id }}</p>
+                            <p><strong>Department:</strong> {{ attachment.student.department|default:"Not specified" }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="text-nssf-accent">Company Information</h6>
+                            <p><strong>Company:</strong> {{ attachment.company.name }}</p>
+                            <p><strong>Address:</strong> {{ attachment.company.address|default:"Not provided" }}</p>
+                            <p><strong>NSSF Number:</strong> {{ attachment.company.nssf_number|default:"Not provided" }}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <h6 class="text-nssf-accent">Attachment Period</h6>
+                            <p><strong>Start Date:</strong> {{ attachment.start_date }}</p>
+                            <p><strong>End Date:</strong> {{ attachment.end_date }}</p>
+                            <p><strong>Duration:</strong> {{ attachment.duration_days }} days</p>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="text-nssf-accent">Supervisor Details</h6>
+                            <p><strong>Name:</strong> {{ attachment.supervisor_name }}</p>
+                            <p><strong>Email:</strong> {{ attachment.supervisor_email|default:"Not provided" }}</p>
+                            <p><strong>Phone:</strong> {{ attachment.supervisor_phone|default:"Not provided" }}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="{% url 'attachment_list' %}" class="btn btn-secondary me-md-2">Back to List</a>
+                        
+                        {% if user.role == 'student' and attachment.student.user == user or user.role == 'admin' %}
+                        <a href="{% url 'attachment_update' attachment.pk %}" class="btn btn-outline-primary me-md-2">
+                            <i class="fas fa-edit me-1"></i>Edit
+                        </a>
+                        {% endif %}
+                        
+                        {% if user.role == 'company' and attachment.company.user == user and attachment.status == 'pending' or user.role == 'admin' %}
+                        <a href="{% url 'attachment_approve' attachment.pk %}" class="btn btn-success me-md-2">
+                            <i class="fas fa-check me-1"></i>Approve
+                        </a>
+                        <a href="{% url 'attachment_reject' attachment.pk %}" class="btn btn-danger">
+                            <i class="fas fa-times me-1"></i>Reject
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

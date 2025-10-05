@@ -1,0 +1,64 @@
+<!-- nssf/templates/nssf/nssf_returns.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2><i class="fas fa-file-invoice me-2"></i>NSSF Returns</h2>
+        <a href="{% url 'nssf_return_create' %}" class="btn btn-nssf-primary">
+            <i class="fas fa-plus me-2"></i>Submit New Return
+        </a>
+    </div>
+    
+    <div class="card">
+        <div class="card-header bg-nssf-primary text-white">
+            <h5 class="mb-0">Submitted Returns</h5>
+        </div>
+        <div class="card-body">
+            {% if returns %}
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Month</th>
+                            <th>Submitted On</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for return in returns %}
+                        <tr>
+                            <td>{{ return.month|date:"F Y" }}</td>
+                            <td>{{ return.submitted_on|date:"M d, Y H:i" }}</td>
+                            <td>
+                                {% if return.is_processed %}
+                                <span class="badge bg-success">Processed</span>
+                                {% else %}
+                                <span class="badge bg-warning">Pending</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a href="{% url 'nssf_return_detail' return.pk %}" class="btn btn-sm btn-outline-primary">
+                                    <i class="fas fa-eye me-1"></i>View
+                                </a>
+                                <a href="{{ return.return_file.url }}" class="btn btn-sm btn-outline-secondary" download>
+                                    <i class="fas fa-download me-1"></i>Download
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="text-center py-4">
+                <i class="fas fa-file-invoice fa-3x text-muted mb-3"></i>
+                <p class="text-muted">No NSSF returns submitted yet.</p>
+                <a href="{% url 'nssf_return_create' %}" class="btn btn-nssf-primary">Submit Your First Return</a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

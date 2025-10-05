@@ -1,0 +1,136 @@
+<!-- templates/about.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <div class="card">
+                <div class="card-header bg-nssf-primary text-white">
+                    <h2 class="mb-0"><i class="fas fa-info-circle me-2"></i>About NSSF Attachment Portal</h2>
+                </div>
+                <div class="card-body">
+                    <div class="text-center mb-4">
+                        <img src="/static/images/nssf-logo.png" alt="NSSF Logo" class="img-fluid mb-3" style="max-height: 120px;" onerror="this.style.display='none'">
+                        <h3 class="text-nssf-accent">Streamlining Student Industrial Attachments</h3>
+                    </div>
+                    
+                    <p>The NSSF Attachment Portal is a comprehensive system designed to facilitate the management of student industrial attachments while ensuring compliance with National Social Security Fund (NSSF) regulations.</p>
+                    
+                    <h4 class="mt-4 text-nssf-primary">Our Mission</h4>
+                    <p>To provide an efficient, transparent, and user-friendly platform that connects students, companies, and educational institutions while ensuring full compliance with NSSF requirements throughout the attachment period.</p>
+                    
+                    <h4 class="mt-4 text-nssf-primary">Key Features</h4>
+                    <div class="row mt-3">
+                        <div class="col-md-6">
+                            <div class="d-flex mb-3">
+                                <div class="me-3">
+                                    <i class="fas fa-check-circle fa-2x text-nssf-secondary"></i>
+                                </div>
+                                <div>
+                                    <h5>Student Management</h5>
+                                    <p class="text-muted">Complete profile management and attachment registration for students.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex mb-3">
+                                <div class="me-3">
+                                    <i class="fas fa-check-circle fa-2x text-nssf-secondary"></i>
+                                </div>
+                                <div>
+                                    <h5>Company Portal</h5>
+                                    <p class="text-muted">Dedicated interface for companies to manage students and submit NSSF returns.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex mb-3">
+                                <div class="me-3">
+                                    <i class="fas fa-check-circle fa-2x text-nssf-secondary"></i>
+                                </div>
+                                <div>
+                                    <h5>NSSF Compliance</h5>
+                                    <p class="text-muted">Automated tracking and reporting of NSSF requirements for all attachments.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex mb-3">
+                                <div class="me-3">
+                                    <i class="fas fa-check-circle fa-2x text-nssf-secondary"></i>
+                                </div>
+                                <div>
+                                    <h5>Reporting System</h5>
+                                    <p class="text-muted">Comprehensive reporting tools for administrators to monitor the attachment program.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h4 class="mt-4 text-nssf-primary">Benefits</h4>
+                    <div class="row mt-3">
+                        <div class="col-md-6">
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <h5 class="card-title">For Students</h5>
+                                    <ul class="ps-3">
+                                        <li>Easy attachment registration process</li>
+                                        <li>NSSF status tracking</li>
+                                        <li>Direct communication with companies</li>
+                                        <li>Digital document submission</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <h5 class="card-title">For Companies</h5>
+                                    <ul class="ps-3">
+                                        <li>Streamlined student verification</li>
+                                        <li>Easy NSSF return submission</li>
+                                        <li>Centralized attachment management</li>
+                                        <li>Compliance monitoring</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <h5 class="card-title">For Administrators</h5>
+                                    <ul class="ps-3">
+                                        <li>Comprehensive oversight</li>
+                                        <li>Automated compliance checks</li>
+                                        <li>Detailed reporting capabilities</li>
+                                        <li>System-wide analytics</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <h5 class="card-title">For NSSF Compliance</h5>
+                                    <ul class="ps-3">
+                                        <li>Automated registration tracking</li>
+                                        <li>Digital return processing</li>
+                                        <li>Audit trail maintenance</li>
+                                        <li>Real-time compliance status</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4 text-center">
+                        <a href="{% url 'contact' %}" class="btn btn-nssf-primary me-2">Contact Us</a>
+                        <a href="{% url 'register' %}" class="btn btn-outline-nssf">Get Started</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

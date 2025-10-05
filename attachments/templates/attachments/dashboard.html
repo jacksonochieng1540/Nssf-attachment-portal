@@ -1,0 +1,267 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="mb-4">Dashboard</h2>
+        </div>
+    </div>
+    
+    {% if user.role == 'student' %}
+    <!-- Student Dashboard -->
+    <div class="row">
+        <div class="col-md-3 mb-4">
+            <div class="card card-dashboard text-center bg-primary text-white">
+                <div class="card-body">
+                    <i class="fas fa-clock dashboard-icon"></i>
+                    <h5 class="card-title mt-2">Pending</h5>
+                    <h3 class="dashboard-stat">{{ pending_attachments }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-4">
+            <div class="card card-dashboard text-center bg-success text-white">
+                <div class="card-body">
+                    <i class="fas fa-check-circle dashboard-icon"></i>
+                    <h5 class="card-title mt-2">Approved</h5>
+                    <h3 class="dashboard-stat">{{ approved_attachments }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-4">
+            <div class="card card-dashboard text-center bg-info text-white">
+                <div class="card-body">
+                    <i class="fas fa-briefcase dashboard-icon"></i>
+                    <h5 class="card-title mt-2">Attachments</h5>
+                    <h3 class="dashboard-stat">{{ attachments.count }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-4">
+            <div class="card card-dashboard text-center {% if nssf_details and nssf_details.is_verified %}bg-success{% else %}bg-warning{% endif %} text-white">
+                <div class="card-body">
+                    <i class="fas fa-id-card dashboard-icon"></i>
+                    <h5 class="card-title mt-2">NSSF Status</h5>
+                    <h3 class="dashboard-stat">
+                        {% if nssf_details and nssf_details.is_verified %}Verified{% else %}Pending{% endif %}
+                    </h3>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Recent Attachments</h5>
+                </div>
+                <div class="card-body">
+                    {% if attachments %}
+                    <div class="list-group">
+                        {% for attachment in attachments|slice:":5" %}
+                        <div class="list-group-item">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h6 class="mb-1">{{ attachment.company.name }}</h6>
+                                <span class="badge bg-{% if attachment.status == 'approved' %}success{% elif attachment.status == 'pending' %}warning{% else %}secondary{% endif %}">
+                                    {{ attachment.status|title }}
+                                </span>
+                            </div>
+                            <p class="mb-1">{{ attachment.start_date }} to {{ attachment.end_date }}</p>
+                            <small>Supervisor: {{ attachment.supervisor_name }}</small>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <p class="text-muted">No attachments yet.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Quick Actions</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <a href="{% url 'attachment_create' %}" class="btn btn-primary">Register New Attachment</a>
+                        <a href="{% url 'nssf_detail' %}" class="btn btn-secondary">Update NSSF Details</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    {% elif user.role == 'company' %}
+    <!-- Company Dashboard -->
+    <div class="row">
+        <div class="col-md-3 mb-4">
+            <div class="card card-dashboard text-center bg-primary text-white">
+                <div class="card-body">
+                    <i class="fas fa-clock dashboard-icon"></i>
+                    <h5 class="card-title mt-2">Pending Approval</h5>
+                    <h3 class="dashboard-stat">{{ pending_attachments }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-4">
+            <div class="card card-dashboard text-center bg-success text-white">
+                <div class="card-body">
+                    <i class="fas fa-user-check dashboard-icon"></i>
+                    <h5 class="card-title mt-2">Current Attachments</h5>
+                    <h3 class="dashboard-stat">{{ current_attachments }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-4">
+            <div class="card card-dashboard text-center bg-info text-white">
+                <div class="card-body">
+                    <i class="fas fa-users dashboard-icon"></i>
+                    <h5 class="card-title mt-2">Total Students</h5>
+                    <h3 class="dashboard-stat">{{ attachments.count }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-4">
+            <div class="card card-dashboard text-center bg-warning text-white">
+                <div class="card-body">
+                    <i class="fas fa-file-invoice dashboard-icon"></i>
+                    <h5 class="card-title mt-2">NSSF Returns</h5>
+                    <h3 class="dashboard-stat">{{ nssf_returns.count }}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Recent Attachment Requests</h5>
+                </div>
+                <div class="card-body">
+                    {% if attachments %}
+                    <div class="list-group">
+                        {% for attachment in attachments|slice:":5" %}
+                        <div class="list-group-item">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h6 class="mb-1">{{ attachment.student.user.get_full_name }}</h6>
+                                <span class="badge bg-{% if attachment.status == 'approved' %}success{% elif attachment.status == 'pending' %}warning{% else %}secondary{% endif %}">
+                                    {{ attachment.status|title }}
+                                </span>
+                            </div>
+                            <p class="mb-1">{{ attachment.start_date }} to {{ attachment.end_date }}</p>
+                            <small>Student ID: {{ attachment.student.student_id }}</small>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <p class="text-muted">No attachment requests yet.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Quick Actions</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <a href="{% url 'attachment_list' %}" class="btn btn-primary">View All Attachments</a>
+                        <a href="{% url 'nssf_return_create' %}" class="btn btn-secondary">Submit NSSF Return</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    {% elif user.role == 'admin' %}
+    <!-- Admin Dashboard -->
+    <div class="row">
+        <div class="col-md-3 mb-4">
+            <div class="card card-dashboard text-center bg-primary text-white">
+                <div class="card-body">
+                    <i class="fas fa-user-graduate dashboard-icon"></i>
+                    <h5 class="card-title mt-2">Students</h5>
+                    <h3 class="dashboard-stat">{{ students_count }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-4">
+            <div class="card card-dashboard text-center bg-success text-white">
+                <div class="card-body">
+                    <i class="fas fa-building dashboard-icon"></i>
+                    <h5 class="card-title mt-2">Companies</h5>
+                    <h3 class="dashboard-stat">{{ companies_count }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-4">
+            <div class="card card-dashboard text-center bg-info text-white">
+                <div class="card-body">
+                    <i class="fas fa-briefcase dashboard-icon"></i>
+                    <h5 class="card-title mt-2">Attachments</h5>
+                    <h3 class="dashboard-stat">{{ attachments_count }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-4">
+            <div class="card card-dashboard text-center bg-warning text-white">
+                <div class="card-body">
+                    <i class="fas fa-clock dashboard-icon"></i>
+                    <h5 class="card-title mt-2">Pending Approval</h5>
+                    <h3 class="dashboard-stat">{{ pending_attachments_count }}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5>System Overview</h5>
+                </div>
+                <div class="card-body">
+                    <div class="list-group">
+                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                            Registered Students
+                            <span class="badge bg-primary rounded-pill">{{ students_count }}</span>
+                        </div>
+                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                            Partner Companies
+                            <span class="badge bg-success rounded-pill">{{ companies_count }}</span>
+                        </div>
+                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                            Ongoing Attachments
+                            <span class="badge bg-info rounded-pill">{{ attachments_count }}</span>
+                        </div>
+                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                            Pending Approvals
+                            <span class="badge bg-warning rounded-pill">{{ pending_attachments_count }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Quick Actions</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <a href="{% url 'company_list' %}" class="btn btn-primary">Manage Companies</a>
+                        <a href="/admin" class="btn btn-secondary">Admin Panel</a>
+                        <a href="{% url 'generate_report' %}" class="btn btn-info">Generate Reports</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

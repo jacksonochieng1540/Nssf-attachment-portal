@@ -1,0 +1,71 @@
+<!-- nssf/templates/nssf/nssf_detail.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-nssf-primary text-white">
+                    <h4 class="mb-0"><i class="fas fa-id-card me-2"></i>NSSF Details</h4>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i>Please provide your NSSF membership details for verification.
+                    </div>
+                    
+                    <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+                        {% csrf_token %}
+                        
+                        <div class="mb-3">
+                            <label for="id_nssf_number" class="form-label">NSSF Number</label>
+                            {{ form.nssf_number }}
+                            {% if form.nssf_number.errors %}
+                            <div class="invalid-feedback d-block">
+                                {{ form.nssf_number.errors }}
+                            </div>
+                            {% endif %}
+                            <div class="form-text">Your unique NSSF membership number.</div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="id_membership_card" class="form-label">NSSF Membership Card</label>
+                            {{ form.membership_card }}
+                            {% if form.membership_card.errors %}
+                            <div class="invalid-feedback d-block">
+                                {{ form.membership_card.errors }}
+                            </div>
+                            {% endif %}
+                            <div class="form-text">Upload a clear scan or photo of your NSSF membership card (PDF, JPG, or PNG).</div>
+                        </div>
+                        
+                        {% if form.instance.membership_card %}
+                        <div class="mb-3">
+                            <p class="mb-1">Current file:</p>
+                            <a href="{{ form.instance.membership_card.url }}" target="_blank" class="btn btn-sm btn-outline-primary">
+                                <i class="fas fa-file me-1"></i>View Current Card
+                            </a>
+                        </div>
+                        {% endif %}
+                        
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a href="{% url 'profile' %}" class="btn btn-secondary me-md-2">Cancel</a>
+                            <button type="submit" class="btn btn-nssf-primary">Save Details</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Add Bootstrap classes to form fields
+    const formFields = document.querySelectorAll('input');
+    formFields.forEach(field => {
+        field.classList.add('form-control');
+    });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,209 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card animate-fade-in">
+                <div class="card-header bg-nssf-primary text-white">
+                    <h4 class="mb-0"><i class="fas fa-bell me-2"></i>Notification Preferences</h4>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i>
+                        Customize how you receive notifications from the NSSF Attachment Portal.
+                    </div>
+
+                    <form method="post" class="needs-validation" novalidate>
+                        {% csrf_token %}
+                        
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <h5 class="text-nssf-primary mb-3"><i class="fas fa-envelope me-2"></i>Delivery Methods</h5>
+                                <div class="form-check form-switch mb-3">
+                                    {{ form.email_enabled }}
+                                    <label class="form-check-label" for="{{ form.email_enabled.id_for_label }}">
+                                        Email Notifications
+                                    </label>
+                                    <div class="form-text">Receive notifications via email</div>
+                                </div>
+                                
+                                <div class="form-check form-switch mb-3">
+                                    {{ form.push_enabled }}
+                                    <label class="form-check-label" for="{{ form.push_enabled.id_for_label }}">
+                                        Push Notifications
+                                    </label>
+                                    <div class="form-text">Receive browser push notifications</div>
+                                </div>
+                                
+                                <div class="form-check form-switch mb-3">
+                                    {{ form.in_app_enabled }}
+                                    <label class="form-check-label" for="{{ form.in_app_enabled.id_for_label }}">
+                                        In-App Notifications
+                                    </label>
+                                    <div class="form-text">Show notifications within the application</div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <h5 class="text-nssf-primary mb-3"><i class="fas fa-clock me-2"></i>Notification Frequency</h5>
+                                <div class="mb-3">
+                                    <label for="{{ form.digest_frequency.id_for_label }}" class="form-label">Digest Frequency</label>
+                                    {{ form.digest_frequency }}
+                                    <div class="form-text">How often to receive notification digests</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <h5 class="text-nssf-primary mb-3"><i class="fas fa-filter me-2"></i>Notification Types</h5>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-check form-switch mb-3">
+                                    {{ form.attachment_updates }}
+                                    <label class="form-check-label" for="{{ form.attachment_updates.id_for_label }}">
+                                        Attachment Updates
+                                    </label>
+                                    <div class="form-text">Notifications about attachment status changes</div>
+                                </div>
+                                
+                                <div class="form-check form-switch mb-3">
+                                    {{ form.nssf_updates }}
+                                    <label class="form-check-label" for="{{ form.nssf_updates.id_for_label }}">
+                                        NSSF Updates
+                                    </label>
+                                    <div class="form-text">Notifications about NSSF verification and returns</div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="form-check form-switch mb-3">
+                                    {{ form.message_notifications }}
+                                    <label class="form-check-label" for="{{ form.message_notifications.id_for_label }}">
+                                        Messages
+                                    </label>
+                                    <div class="form-text">Notifications about new messages</div>
+                                </div>
+                                
+                                <div class="form-check form-switch mb-3">
+                                    {{ form.announcement_notifications }}
+                                    <label class="form-check-label" for="{{ form.announcement_notifications.id_for_label }}">
+                                        Announcements
+                                    </label>
+                                    <div class="form-text">System announcements and updates</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                            <a href="{% url 'notifications:list' %}" class="btn btn-secondary me-md-2">
+                                <i class="fas fa-arrow-left me-1"></i>Back to Notifications
+                            </a>
+                            <button type="submit" class="btn btn-nssf-primary">
+                                <i class="fas fa-save me-1"></i>Save Preferences
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="card mt-4 animate-fade-in" style="animation-delay: 0.2s;">
+                <div class="card-header bg-nssf-secondary text-white">
+                    <h5 class="mb-0"><i class="fas fa-question-circle me-2"></i>Notification Help</h5>
+                </div>
+                <div class="card-body">
+                    <div class="accordion" id="notificationHelp">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingOne">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" 
+                                        data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                    What are the different notification types?
+                                </button>
+                            </h2>
+                            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne">
+                                <div class="accordion-body">
+                                    <ul class="list-unstyled">
+                                        <li><strong>Attachment Updates:</strong> When your attachment status changes (approved, rejected, etc.)</li>
+                                        <li><strong>NSSF Updates:</strong> NSSF verification status and return processing updates</li>
+                                        <li><strong>Messages:</strong> New messages from administrators or companies</li>
+                                        <li><strong>Announcements:</strong> System-wide announcements and updates</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingTwo">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" 
+                                        data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                    What are the different delivery methods?
+                                </button>
+                            </h2>
+                            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo">
+                                <div class="accordion-body">
+                                    <ul class="list-unstyled">
+                                        <li><strong>Email:</strong> Notifications sent to your registered email address</li>
+                                        <li><strong>Push:</strong> Browser notifications (requires permission)</li>
+                                        <li><strong>In-App:</strong> Notifications shown within the application</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.form-check-input:checked {
+    background-color: var(--nssf-primary);
+    border-color: var(--nssf-primary);
+}
+
+.form-check-input:focus {
+    border-color: var(--nssf-primary);
+    box-shadow: 0 0 0 0.2rem rgba(26, 35, 126, 0.25);
+}
+
+.accordion-button:not(.collapsed) {
+    background-color: var(--nssf-primary);
+    color: white;
+}
+
+.accordion-button:focus {
+    border-color: var(--nssf-primary);
+    box-shadow: 0 0 0 0.2rem rgba(26, 35, 126, 0.25);
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Add Bootstrap classes to form elements
+    const formSelects = document.querySelectorAll('select');
+    formSelects.forEach(select => {
+        select.classList.add('form-select');
+    });
+
+    // Add form validation
+    const forms = document.querySelectorAll('.needs-validation');
+    forms.forEach(form => {
+        form.addEventListener('submit', function(event) {
+            if (!form.checkValidity()) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            form.classList.add('was-validated');
+        }, false);
+    });
+
+    // Smooth scrolling for accordion
+    document.querySelectorAll('.accordion-button').forEach(button => {
+        button.addEventListener('click', function() {
+            this.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        });
+    });
+});
+</script>
+{% endblock %}
