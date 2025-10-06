@@ -3,16 +3,15 @@
 A modern web platform designed to streamline **student industrial attachments** with **NSSF compliance** and secure digital management.  
 Built with **Django**, styled using the **NSSF theme** (trustworthy, professional, and accessible).
 
----
 
-## 🚀 Features
+##  Composition of the project
 
-- 🔐 **Secure Authentication** — Role-based login for students, supervisors, and administrators.  
-- 📄 **Attachment Management** — Track and approve student attachment requests.  
-- 🏢 **Company Integration** — Manage company profiles and placement opportunities.  
-- 💬 **Real-time Notifications** — Stay updated with approvals, feedback, and deadlines.  
-- 🎨 **Custom NSSF UI Theme** — Professional, clean, and responsive interface inspired by NSSF colors and values.  
-- 📊 **Dashboard Insights** — View key attachment statistics and analytics.  
+-**Secure Authentication** — Role-based login for students, supervisors, and administrators.  
+-**Attachment Management** — Track and approve student attachment requests.  
+-**Company Integration** — Manage company profiles and placement opportunities.  
+-**Real-time Notifications** — Stay updated with approvals, feedback, and deadlines.  
+-**Custom NSSF UI Theme** — Professional, clean, and responsive interface inspired by NSSF colors and values.  
+-**Dashboard Insights** — View key attachment statistics and analytics.  
 
 
 ## 🧩 Tech Stack
