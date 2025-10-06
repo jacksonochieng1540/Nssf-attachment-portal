@@ -78,7 +78,6 @@ def dashboard(request):
 def attachment_list(request):
     try:
         if request.user.role == 'student':
-            # Handle missing student profile gracefully
             try:
                 student_profile = StudentProfile.objects.get(user=request.user)
                 attachments = Attachment.objects.filter(student=student_profile)
@@ -87,7 +86,6 @@ def attachment_list(request):
                 return redirect('create_student_profile')
                 
         elif request.user.role == 'company':
-            # Handle missing company profile gracefully
             try:
                 company = Company.objects.get(user=request.user)
                 attachments = Attachment.objects.filter(company=company)
@@ -97,13 +95,11 @@ def attachment_list(request):
                 
         else:  
             attachments = Attachment.objects.all()
-        
-        # Filter by status if provided
+    
         status_filter = request.GET.get('status')
         if status_filter:
             attachments = attachments.filter(status=status_filter)
         
-        # Search functionality
         search_query = request.GET.get('q')
         if search_query:
             if request.user.role == 'student':
@@ -146,7 +142,6 @@ def attachment_create(request):
         if form.is_valid():
             attachment = form.save(commit=False)
             
-            # Set student if user is a student
             if request.user.role == 'student':
                 try:
                     student_profile = StudentProfile.objects.get(user=request.user)
@@ -170,7 +165,6 @@ def attachment_create(request):
 def attachment_detail(request, pk):
     attachment = get_object_or_404(Attachment, pk=pk)
     
-    # Check permissions
     if request.user.role == 'student' and attachment.student.user != request.user:
         messages.error(request, 'You do not have permission to view this attachment.')
         return redirect('attachment_list')
@@ -184,7 +178,6 @@ def attachment_detail(request, pk):
 def attachment_update(request, pk):
     attachment = get_object_or_404(Attachment, pk=pk)
     
-    # Check permissions
     if request.user.role == 'student' and attachment.student.user != request.user:
         messages.error(request, 'You do not have permission to update this attachment.')
         return redirect('attachment_list')
@@ -192,7 +185,6 @@ def attachment_update(request, pk):
         messages.error(request, 'You do not have permission to update this attachment.')
         return redirect('attachment_list')
     elif request.user.role == 'admin':
-        # Admin can update any attachment
         pass
     
     if request.method == 'POST':
@@ -214,7 +206,7 @@ def attachment_update(request, pk):
 def attachment_delete(request, pk):
     attachment = get_object_or_404(Attachment, pk=pk)
     
-    # Check permissions
+ 
     if request.user.role == 'student' and attachment.student.user != request.user:
         messages.error(request, 'You do not have permission to delete this attachment.')
         return redirect('attachment_list')
@@ -222,7 +214,6 @@ def attachment_delete(request, pk):
         messages.error(request, 'You do not have permission to delete this attachment.')
         return redirect('attachment_list')
     elif request.user.role == 'admin':
-        # Admin can delete any attachment
         pass
     
     if request.method == 'POST':
@@ -240,7 +231,7 @@ def attachment_approve(request, pk):
     
     attachment = get_object_or_404(Attachment, pk=pk)
     
-    # Check if company owns this attachment
+    
     if request.user.role == 'company' and attachment.company.user != request.user:
         messages.error(request, 'You can only approve attachments for your company.')
         return redirect('attachment_list')
@@ -258,7 +249,7 @@ def attachment_reject(request, pk):
     
     attachment = get_object_or_404(Attachment, pk=pk)
     
-    # Check if company owns this attachment
+    
     if request.user.role == 'company' and attachment.company.user != request.user:
         messages.error(request, 'You can only reject attachments for your company.')
         return redirect('attachment_list')
@@ -304,7 +295,6 @@ def company_register(request):
         messages.error(request, 'Only company users can register companies.')
         return redirect('dashboard')
     
-    # Check if user already has a company
     if hasattr(request.user, 'company'):
         messages.warning(request, 'You already have a company profile.')
         return redirect('dashboard')
@@ -438,13 +428,13 @@ def attachment_stats(request):
         messages.error(request, 'Only administrators can view attachment statistics.')
         return redirect('dashboard')
     
-    # Get statistics
+    
     status_counts = Attachment.objects.values('status').annotate(count=Count('status'))
     monthly_counts = Attachment.objects.extra(
         select={'month': "strftime('%%Y-%%m', start_date)"}
     ).values('month').annotate(count=Count('id')).order_by('month')
     
-    # Get company-wise statistics
+  
     company_stats = Company.objects.annotate(
         attachment_count=Count('attachment'),
         pending_count=Count('attachment', filter=Q(attachment__status='pending')),
@@ -460,7 +450,7 @@ def attachment_stats(request):
     
 @login_required
 def create_student_profile(request):
-    # Check if profile already exists
+    
     if StudentProfile.objects.filter(user=request.user).exists():
         messages.info(request, 'You already have a student profile.')
         return redirect('dashboard')
@@ -472,8 +462,7 @@ def create_student_profile(request):
             profile.user = request.user
             profile.save()
             messages.success(request, 'Student profile created successfully!')
-            return redirect('attachment_list')  # Redirect to attachments list
-    else:
+            return redirect('attachment_list')  
         form = StudentProfileForm()
     
     return render(request, 'attachments/create_student_profile.html', {'form': form})
