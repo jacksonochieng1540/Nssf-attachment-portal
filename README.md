@@ -1,4 +1,4 @@
-# 🏢 NSSF Attachment and Internship Management Portal
+# NSSF Attachment and Internship Management Portal
 
 A modern web platform designed to streamline **student industrial attachments** with **NSSF compliance** and secure digital management.  
 Built with **Django**, styled using the **NSSF theme** (trustworthy, professional, and accessible).
@@ -6,15 +6,15 @@ Built with **Django**, styled using the **NSSF theme** (trustworthy, professiona
 
 ##  Composition of the project
 
--**Secure Authentication** — Role-based login for students, supervisors, and administrators.  
+-**Secure Authentication** — Role-based login for students, Company and administrators(admin).  
 -**Attachment Management** — Track and approve student attachment requests.  
 -**Company Integration** — Manage company profiles and placement opportunities.  
--**Real-time Notifications** — Stay updated with approvals, feedback, and deadlines.  
+-**Real-time Notifications** — Stay updated with approvals, feedback, and deadlines of the attachment and Internships.  
 -**Custom NSSF UI Theme** — Professional, clean, and responsive interface inspired by NSSF colors and values.  
 -**Dashboard Insights** — View key attachment statistics and analytics.  
 
 
-## 🧩 Tech Stack
+## Tech Stack
 
 | Layer | Technology |
 |-------|-------------|
@@ -26,7 +26,7 @@ Built with **Django**, styled using the **NSSF theme** (trustworthy, professiona
 
 ---
 
-## 🛠️ Setup Instructions
+##  To  Setup follow the below  Instructions
 
 
 # 1️⃣ Clone the repository
@@ -52,10 +52,10 @@ python manage.py migrate
 python manage.py runserver
 
 
-🛡️ License
+License
 
 This project is licensed under the MIT License
 .
 Feel free to use and modify it for your own projects — attribution appreciated.
 
-💡 “Empowering students and organizations through secure, efficient, and compliant digital attachment management.”
+“Empowering students and organizations through secure, efficient, and compliant digital attachment management.”
