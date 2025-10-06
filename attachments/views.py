@@ -77,7 +77,7 @@ def dashboard(request):
 @login_required
 def attachment_list(request):
     try:
-        if request.user.role == 'student'
+        if request.user.role == 'student':
             try:
                 student_profile = StudentProfile.objects.get(user=request.user)
                 attachments = Attachment.objects.filter(student=student_profile)
