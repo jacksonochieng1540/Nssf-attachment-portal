@@ -31,7 +31,7 @@ jobs:
           POSTGRES_USER: ${{ env.POSTGRES_USER }}
           POSTGRES_PASSWORD: ${{ env.POSTGRES_PASSWORD }}
         options: >-
-          --health-cmd="pg_isready -U ${{ env.POSTGRES_USER }} -d ${{ env.POSTGRES_DB }}"
+          --health-cmd="pg_isready -U test_user -d test_db"
           --health-interval=10s
           --health-timeout=5s
           --health-retries=5
@@ -51,11 +51,15 @@ jobs:
           pip install -r requirements.txt
 
       - name: Run Django checks
+        env:
+          DATABASE_URL: "postgres://test_user:test_pass@localhost:5432/test_db"
         run: |
           python manage.py check
           python manage.py migrate --noinput
           python manage.py collectstatic --noinput
 
       - name: Run tests
+        env:
+          DATABASE_URL: "postgres://test_user:test_pass@localhost:5432/test_db"
         run: |
           python manage.py test
