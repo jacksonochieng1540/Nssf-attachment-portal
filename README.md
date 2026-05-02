@@ -29,33 +29,25 @@ Built with **Django**, styled using the **NSSF theme** (trustworthy, professiona
 ##  To  Setup follow the below  Instructions
 
 
-# 1️⃣ Clone the repository
+# Clone the repository
 git clone https://github.com/jacksonochieng1540/nssf-attachment-portal.git
 cd nssf-attachment-portal
 
-# 2️⃣ Create a virtual environment
+#  Create a virtual environment
 python -m venv venv #windows
 python3 -m venv venv
 source venv/bin/activate -linux  # (Windows: venv\Scripts\activate)
 
-# 3️⃣ Install dependencies
+#  Install dependencies
 pip install -r requirements.txt
 
-# 4️⃣ Configure environment variables
+#  Configure environment variables
 cp .env.example .env
 # Update your DB credentials, SECRET_KEY, and DEBUG settings
 
-# 5️⃣ Run migrations
+#  Run migrations
 python manage.py migrate
 
-# 6️⃣ Start the development server
+# Start the development server
 python manage.py runserver
 
-
-License
-
-This project is licensed under the MIT License
-.
-Feel free to use and modify it for your own projects — attribution appreciated.
-
-“Empowering students and organizations through secure, efficient, and compliant digital attachment management.”
