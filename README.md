@@ -13,18 +13,7 @@ Built with **Django**, styled using the **NSSF theme** (trustworthy, professiona
 -**Custom NSSF UI Theme** — Professional, clean, and responsive interface inspired by NSSF colors and values.  
 -**Dashboard Insights** — View key attachment statistics and analytics.  
 
-
-## Tech Stack
-
-| Layer | Technology |
-|-------|-------------|
-| Backend | Django (Python 3.10+) |
-| Frontend | Bootstrap 5, Font Awesome 6 |
-| Database | PostgreSQL / MySQL |
-| Styling | Custom CSS (`nssf-theme.css`) |
-| Hosting | Render / Docker Ready |
-
----
+|
 
 ##  To  Setup follow the below  Instructions
 
