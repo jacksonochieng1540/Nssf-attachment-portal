@@ -4,7 +4,7 @@ A modern web platform designed to streamline **student industrial attachments** 
 Built with **Django**, styled using the **NSSF theme** (trustworthy, professional, and accessible).
 
 
-##  Composition of the project
+#  Composition of the project
 
 -**Secure Authentication** — Role-based login for students, Company and administrators(admin).  
 -**Attachment Management** — Track and approve student attachment requests.  
