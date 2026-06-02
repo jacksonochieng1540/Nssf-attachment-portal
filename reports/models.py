@@ -1,4 +1,3 @@
-# reports/models.py
 from django.db import models
 from django.contrib.auth import get_user_model
 
@@ -15,7 +14,7 @@ class ReportHistory(models.Model):
     report_type = models.CharField(max_length=20, choices=REPORT_TYPES)
     generated_by = models.ForeignKey(User, on_delete=models.CASCADE)
     generated_at = models.DateTimeField(auto_now_add=True)
-    parameters = models.JSONField(default=dict)  # Store filter parameters
+    parameters = models.JSONField(default=dict) 
     download_count = models.IntegerField(default=0)
     
     class Meta:
